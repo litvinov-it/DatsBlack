@@ -8,13 +8,13 @@ def predict_position(data):
         speed = ship['speed']
         
         if ship['direction'] == 'north':
-            ship['y'] += speed
-        elif ship['direction'] == 'south':
             ship['y'] -= speed
+        elif ship['direction'] == 'south':
+            ship['y'] += speed
         elif ship['direction'] == 'east':
-            ship['x'] += speed
-        elif ship['direction'] == 'west':
             ship['x'] -= speed
+        elif ship['direction'] == 'west':
+            ship['x'] += speed
 
     return data
 
