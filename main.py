@@ -1,51 +1,7 @@
-import math
+from predict_position import predict_position
+from def_shoot import shoot
 
-def shoot(data):
-    '''
-    Отдаёт словарь по каждому кароблю, с информацией о том, нужно ли стрелять и куда стрелять
-    Например:
-    {
-        "id": 1811,    ----  айди текущего корабля
-        "fire": True,    ---- бывает что false. Это значит, что стрелять не нужно и тогда coordinates будет равен [0,0]
-        "coordinates": [1402, 1454]    ---- координаты, куда стрелять [x, y]
-    }
-    '''
-
-    shapes_shoot = {}
-
-    for i in range(len(data['scan']['myShips'])):
-        print(f"id - {data['scan']['myShips'][i]['id']}   x - {data['scan']['myShips'][i]['x']}   y - {data['scan']['myShips'][i]['y']}   radius - {data['scan']['myShips'][i]['scanRadius']}")
-        fire = False
-        coordinates = [0,0]
-        for j in range(len(data['scan']['enemyShips'])):
-            len_x = abs(data['scan']['myShips'][i]['x'] - data["scan"]["enemyShips"][j]["x"])
-            len_y = abs(data['scan']['myShips'][i]['y'] - data["scan"]["enemyShips"][j]["y"])
-            gipo = math.sqrt(len_x**2 + len_y**2)
-            print(len_x,len_y)
-            print(gipo)
-            if gipo <= data['scan']['myShips'][i]['scanRadius']:
-                fire = True
-                coordinates = [data["scan"]["enemyShips"][j]["x"], data["scan"]["enemyShips"][j]["y"]]
-                print('FIRE!!!!')
-            print(f'        enemy: x - {data["scan"]["enemyShips"][j]["x"]}    y - {data["scan"]["enemyShips"][j]["y"]}')
-        shapes_shoot[data['scan']['myShips'][i]['id']] = {'fire': fire, 'coordinates': coordinates}
-    
-    print('-----------------------')
-    print('-----------------------')
-    print('-----------------------')
-    print('-----------------------')
-    return shapes_shoot
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-
-    data = {
+data = {
     "success": True,
     "scan": {
         "myShips": [
@@ -328,4 +284,10 @@ if __name__ == '__main__':
 }
 
 
-    print(shoot(data))
+data_predict = predict_position(data)
+
+mass_shoots = shoot(data_predict)
+
+print(mass_shoots)
+
+

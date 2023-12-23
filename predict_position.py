@@ -18,7 +18,12 @@ def predict_position(data):
 
     return data
 
-data = {
+
+
+
+if __name__ == '__main__':
+    
+    data = {
     "success": True,
     "scan": {
         "myShips": [
@@ -300,9 +305,9 @@ data = {
     }
 }
 
-data_predict = predict_position(data)
+    data_predict = predict_position(data)
 
-for i in range(len(data["scan"]['enemyShips'])):
-    print('Корабль врага ', i+1)
-    print('X: ', data['scan']['enemyShips'][i]['x'], 'Y: ', data['scan']['enemyShips'][i]['y'])
-    print('X: ', data_predict['scan']['enemyShips'][i]['x'], 'Y: ', data_predict['scan']['enemyShips'][i]['y'])
+    for i in range(len(data["scan"]['enemyShips'])):
+        print('Корабль врага ', i+1)
+        print('X: ', data['scan']['enemyShips'][0]['x'], 'Y: ', data['scan']['enemyShips'][0]['y'])
+        print('X: ', data_predict['scan']['enemyShips'][0]['x'], 'Y: ', data_predict['scan']['enemyShips'][0]['y'])
