@@ -21,12 +21,16 @@ while True:
     response = requests.get(f"{BASE_URL}/scan", headers=headers)
 
     data = response.json()
+    data1 = response.json()
     massMyShips = data.get('scan', {}).get('myShips', [])
 
     data_predict = predict_position(data)
     mass_shoots = shoot(data_predict)
 
 
+    data = {'ships': []}
+    for myShip in massMyShips:
+        data['ships'].append( generateMove(myShip) )
 
     near_ships = {'ships': []}
     for myShip in massMyShips:
@@ -58,8 +62,8 @@ while True:
 
     print(f"\n-----------------------{response['tick']}----------------------------\n")
 
-    print('Наших кораблей: ', len(data['scan']['myShips']))
-    print('Вражеских кораблей рядом: ', len(data['scan']['enemyShips']))
+    print('Наших кораблей: ', len(data1['scan']['myShips']))
+    print('Вражеских кораблей рядом: ', len(data1['scan']['enemyShips']))
 
     time.sleep(3)
 
