@@ -7,189 +7,79 @@ from def_shoot import shoot
 from move import generateMove
 from map import map
 
-
-
-
 BASE_URL = 'https://datsblack.datsteam.dev/api'
 headers = {
     "x-api-Key": "dff47333-0c90-4954-be6f-60fa24043181"
 }
-tick = 0
+
+def start():
+    tick = 0
+    while True:
+        response = requests.get(f"{BASE_URL}/scan", headers=headers)
+
+        data = response.json()
+        data1 = response.json()
+
+        if(data['success'] == False):
+            print('Битва Завершена')
+            break
+
+        if tick == data1['scan']['tick']:
+            continue
+        else:
+            tick = data1['scan']['tick']
+
+        massMyShips = data.get('scan', {}).get('myShips', [])
+
+        data_predict = predict_position(data)
+        mass_shoots = shoot(data_predict)
+
+
+        data = {'ships': []}
+        for myShip in massMyShips:
+            data['ships'].append( generateMove(myShip) )
+
+        near_ships = {'ships': []}
+        for myShip in massMyShips:
+
+            ship = generateMove(myShip)
+            
+            if mass_shoots[ship['id']]['fire']:
+                ship['cannonShoot'] = {
+                    "x": mass_shoots[ship['id']]['coordinates'][0],
+                    "y": mass_shoots[ship['id']]['coordinates'][1]
+                } 
+
+            near_ships['ships'].append(ship)
+
+
+        for myShip in massMyShips:
+            for i in data:
+                if i == 'ships':
+                    for ship in data[i]:
+                        if ship['id'] == myShip['id']:
+                            print(f"ID: {myShip['id']}")
+                            print(f"Hp: {myShip['hp']}  MaxHp: {myShip['maxHp']}")
+                            print(f"Speed: {myShip['speed']}  CheangeSpeed: {ship['changeSpeed']}")
+                            print(f"Direction: {myShip['direction']}  CheangeRotate: {ship['rotate']}\n")
+                            
+
+
+        response = requests.post(f"{BASE_URL}/shipCommand", data=json.dumps(data), headers=headers).json()
+
+        print(f"\n-----------------------{response['tick']}----------------------------\n")
+
+        print('Наших кораблей: ', len(data1['scan']['myShips']))
+        print('Вражеских кораблей рядом: ', len(data1['scan']['enemyShips']))
+
+        if response['tick'] == 0:
+            print("Game Over")
+            break
 
 while True:
-    response = requests.get(f"{BASE_URL}/scan", headers=headers)
-
-    data = response.json()
-    data1 = response.json()
-    if tick == data1['scan']['tick']:
-        continue
-    else:
-        tick = data1['scan']['tick']
-
-    massMyShips = data.get('scan', {}).get('myShips', [])
-
-    data_predict = predict_position(data)
-    mass_shoots = shoot(data_predict)
-
-
-    data = {'ships': []}
-    for myShip in massMyShips:
-        data['ships'].append( generateMove(myShip) )
-
-    near_ships = {'ships': []}
-    for myShip in massMyShips:
-
-        ship = generateMove(myShip)
-        
-        if mass_shoots[ship['id']]['fire']:
-            ship['cannonShoot'] = {
-                "x": mass_shoots[ship['id']]['coordinates'][0],
-                "y": mass_shoots[ship['id']]['coordinates'][1]
-            } 
-
-        near_ships['ships'].append(ship)
-
-
-    for myShip in massMyShips:
-        for i in data:
-            if i == 'ships':
-                for ship in data[i]:
-                    if ship['id'] == myShip['id']:
-                        print(f"ID: {myShip['id']}")
-                        print(f"Hp: {myShip['hp']}  MaxHp: {myShip['maxHp']}")
-                        print(f"Speed: {myShip['speed']}  CheangeSpeed: {ship['changeSpeed']}")
-                        print(f"Direction: {myShip['direction']}  CheangeRotate: {ship['rotate']}\n")
-                        
-
-
-    response = requests.post(f"{BASE_URL}/shipCommand", data=json.dumps(data), headers=headers).json()
-
-    print(f"\n-----------------------{response['tick']}----------------------------\n")
-
-    print('Наших кораблей: ', len(data1['scan']['myShips']))
-    print('Вражеских кораблей рядом: ', len(data1['scan']['enemyShips']))
-
-    if response['tick'] == 0:
-        print("Game Over")
-        break
-
-
-
-
-
-# {
-#     "ships": [
-#         {
-#             "id": 207,
-#             "changeSpeed": 0,
-#             "rotate": 90
-#             // "cannonShoot": {
-#             //     "x":1522,
-#             //     "y":252
-#             // }
-#         }
-#     ]
-# }
-
-
-
-
-# while True:
-
-
-#     for key in mass_shoots:
-#         if mass_shoots[key]['fire']:
-#             body['ships'].append({
-#                 "id": key,
-#                 "cannonShoot": {
-#                     "x": mass_shoots[key]['coordinates'][0],
-#                     "y": mass_shoots[key]['coordinates'][1]
-#                 }
-#             })
-
-#     # print(body)
-
-
-#     if len(body['ships']) == 0:
-#         time.sleep(3)
-#         continue
-
-
-#     body = json.dumps(body)
-
-#     print('FFFFFFFFFFFFFIIIIIIIIIIIIIIIIIRRRRRRRRRRRRRRREEEEEEEEEEEEE')
-#     response = requests.post(f"{BASE_URL}/scan", headers=headers, data=body).json()
-
-#     print(response)
-#     time.sleep(3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# while True:
-
-    
-
-
-
-
-
-#     print('---------------------------------')
-#     response = requests.get(f"{BASE_URL}/scan", headers=headers)
-#     print(requests)
-
-#     near_ships = response.json()
-#     print(near_ships['success'])
-#     data_predict = predict_position(near_ships)
-
-#     mass_shoots = shoot(data_predict)
-
-#     # print(mass_shoots)
-
-#     body = {
-#         "ships": []
-#     }
-
-#     for key in mass_shoots:
-#         if mass_shoots[key]['fire']:
-#             body['ships'].append({
-#                 "id": key,
-#                 "cannonShoot": {
-#                     "x": mass_shoots[key]['coordinates'][0],
-#                     "y": mass_shoots[key]['coordinates'][1]
-#                 }
-#             })
-
-#     # print(body)
-
-
-#     if len(body['ships']) == 0:
-#         time.sleep(3)
-#         continue
-
-
-#     body = json.dumps(body)
-
-#     print('FFFFFFFFFFFFFIIIIIIIIIIIIIIIIIRRRRRRRRRRRRRRREEEEEEEEEEEEE')
-#     response = requests.post(f"{BASE_URL}/scan", headers=headers, data=body).json()
-
-#     print(response)
-#     time.sleep(3)
-
-
-
-
+    response = requests.post(f'{BASE_URL}/royalBattle/registration', headers=headers).json()
+    print(response['errors'][0]['message'])
+    if response['success']:
+        print('Битва началась')
+        start()
+    time.sleep(2)
