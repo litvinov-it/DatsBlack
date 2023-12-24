@@ -37,20 +37,16 @@ def start():
 
         data = {'ships': []}
         for myShip in massMyShips:
-            data['ships'].append( generateMove(myShip) )
-
-        near_ships = {'ships': []}
-        for myShip in massMyShips:
 
             ship = generateMove(myShip)
-            
             if mass_shoots[ship['id']]['fire']:
                 ship['cannonShoot'] = {
                     "x": mass_shoots[ship['id']]['coordinates'][0],
                     "y": mass_shoots[ship['id']]['coordinates'][1]
                 } 
 
-            near_ships['ships'].append(ship)
+
+            data['ships'].append( generateMove(myShip) )
 
 
         for myShip in massMyShips:
