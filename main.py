@@ -14,14 +14,18 @@ BASE_URL = 'https://datsblack.datsteam.dev/api'
 headers = {
     "x-api-Key": "dff47333-0c90-4954-be6f-60fa24043181"
 }
-
+tick = 0
 
 while True:
-    print('---------------------------------')
     response = requests.get(f"{BASE_URL}/scan", headers=headers)
 
     data = response.json()
     data1 = response.json()
+    if tick == data1['scan']['tick']:
+        continue
+    else:
+        tick = data1['scan']['tick']
+
     massMyShips = data.get('scan', {}).get('myShips', [])
 
     data_predict = predict_position(data)
@@ -64,8 +68,6 @@ while True:
 
     print('Наших кораблей: ', len(data1['scan']['myShips']))
     print('Вражеских кораблей рядом: ', len(data1['scan']['enemyShips']))
-
-    time.sleep(3)
 
     if response['tick'] == 0:
         print("Game Over")
