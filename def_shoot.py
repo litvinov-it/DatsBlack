@@ -21,7 +21,7 @@ def shoot(data):
             len_x = data['scan']['myShips'][i]['x'] - data["scan"]["enemyShips"][j]["x"]
             len_y = data['scan']['myShips'][i]['y'] - data["scan"]["enemyShips"][j]["y"]
             gipo = math.sqrt(len_x**2 + len_y**2)
-            if gipo <= data['scan']['myShips'][i]['scanRadius']:
+            if gipo <= data['scan']['myShips'][i]['cannonRadius']:
                 fire = True
                 coordinates = [data["scan"]["enemyShips"][j]["x"], data["scan"]["enemyShips"][j]["y"]]
         shapes_shoot[data['scan']['myShips'][i]['id']] = {'fire': fire, 'coordinates': coordinates}
