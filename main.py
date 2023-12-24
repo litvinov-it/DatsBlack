@@ -21,7 +21,7 @@ def start():
         data1 = response.json()
 
         if(data['success'] == False):
-            print('Битва Завершена')
+            print('success = false')
             break
 
         if tick == data1['scan']['tick']:
@@ -78,8 +78,14 @@ def start():
 
 while True:
     response = requests.post(f'{BASE_URL}/royalBattle/registration', headers=headers).json()
-    print(response['errors'][0]['message'])
+    if response['errors']:
+        if response['errors'][0]['message'] == 'Вы уже участвуете в битве':
+            print('Битва началась')
+            start()
+        else:
+            print(response['errors'][0]['message'])
     if response['success']:
         print('Битва началась')
         start()
+
     time.sleep(2)
