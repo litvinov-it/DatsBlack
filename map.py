@@ -3,6 +3,9 @@ import os
 import requests
 
 def map():
+  if os.path.exists('data/map.json'):
+    with open("data/map.json", "r") as json_file:
+      return json.load(json_file)
 
   BASE_URL = 'https://datsblack.datsteam.dev/api'
   headers = {
@@ -36,13 +39,14 @@ def map():
       dot[1] += 1
       dot[0] = island['start'][0]
   
+  # Создание директории, если она не существует
+  os.makedirs("data", exist_ok=True)
+
+  # Открытие файла для записи
+  with open("data/map.json", "w") as json_file:
+      json.dump({'map': map}, json_file)
+
   return map
 
-  # # Создание директории, если она не существует
-  # os.makedirs("data", exist_ok=True)
-
-  # # Открытие файла для записи
-  # with open("data/map.json", "w") as json_file:
-  #     json.dump({'map': map}, json_file)
-
-print(map())
+if __name__ == '__main__':
+  print(map())
