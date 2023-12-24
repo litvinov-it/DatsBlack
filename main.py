@@ -64,6 +64,9 @@ def start():
                             print(f"Direction: {myShip['direction']}  CheangeRotate: {ship['rotate']}\n")
                             
 
+        print(data)
+        
+        
 
         response = requests.post(f"{BASE_URL}/shipCommand", data=json.dumps(data), headers=headers).json()
 
