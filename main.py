@@ -41,9 +41,25 @@ while True:
 
         near_ships['ships'].append(ship)
 
-    print(near_ships)
-    response = requests.post(f"{BASE_URL}/shipCommand", data=json.dumps(near_ships), headers=headers).json()
-    print(response)
+
+    for myShip in massMyShips:
+        for i in data:
+            if i == 'ships':
+                for ship in data[i]:
+                    if ship['id'] == myShip['id']:
+                        print(f"ID: {myShip['id']}")
+                        print(f"Hp: {myShip['hp']}  MaxHp: {myShip['maxHp']}")
+                        print(f"Speed: {myShip['speed']}  CheangeSpeed: {ship['changeSpeed']}")
+                        print(f"Direction: {myShip['direction']}  CheangeRotate: {ship['rotate']}\n")
+                        
+
+
+    response = requests.post(f"{BASE_URL}/shipCommand", data=json.dumps(data), headers=headers).json()
+
+    print(f"\n-----------------------{response['tick']}----------------------------\n")
+
+    print('Наших кораблей: ', len(data['scan']['myShips']))
+    print('Вражеских кораблей рядом: ', len(data['scan']['enemyShips']))
 
     time.sleep(3)
 
