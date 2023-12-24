@@ -34,19 +34,23 @@ def start():
         data_predict = predict_position(data)
         mass_shoots = shoot(data_predict)
 
-
         data = {'ships': []}
         for myShip in massMyShips:
 
             ship = generateMove(myShip)
-            if mass_shoots[ship['id']]['fire']:
+            print(f'          ship    ---- {ship}')
+            print(f'          mass_shoots[ship["id"]]    ---- {mass_shoots[ship['id']]}')
+            print(f'          mass_shoots[ship["id"]]["fire"]    ---- {mass_shoots[ship["id"]]['fire']}')
+            if mass_shoots[ship["id"]]['fire']:
+
                 ship['cannonShoot'] = {
                     "x": mass_shoots[ship['id']]['coordinates'][0],
                     "y": mass_shoots[ship['id']]['coordinates'][1]
                 } 
-
-
-            data['ships'].append( generateMove(myShip) )
+            print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            print(f'          ship    ---- {ship}')
+            print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            data['ships'].append( ship )
 
 
         for myShip in massMyShips:
@@ -67,6 +71,13 @@ def start():
 
         print('Наших кораблей: ', len(data1['scan']['myShips']))
         print('Вражеских кораблей рядом: ', len(data1['scan']['enemyShips']))
+
+        print(data)
+        for i in range(len(data['ships'])):
+            if 'coordinates' in data['ships'][i]:
+                print('FFFFFFFFFFFFFFFIIIIIIIIIIIIIIIRRRRRRRRRRREEEEEEEEEEEE!!!!!!!!!!!!!') 
+        print(mass_shoots)
+
 
         if response['tick'] == 0:
             print("Game Over")
