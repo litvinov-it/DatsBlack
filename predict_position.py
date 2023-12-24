@@ -1,10 +1,10 @@
 import copy
 
-def predict_position(ships):
+def predict_position(data):
 
-    ships = copy.deepcopy(ships)
+    data = copy.deepcopy(data)
 
-    for ship in ships:
+    for ship in data['scan']['enemyShips']:
         speed = ship['speed']
         
         if ship['direction'] == 'north':
@@ -16,7 +16,7 @@ def predict_position(ships):
         elif ship['direction'] == 'west':
             ship['x'] += speed
 
-    return ships
+    return data
 
 
 
