@@ -29,20 +29,26 @@ def map():
 
       for i_x in range( len(mass_x) ):
         if dot[0] == 2000: break
-        print(dot)
+        # print(dot)
         map[dot[0]][dot[1]] = island['map'][i_y][i_x]
         dot[0] += 1
 
       dot[1] += 1
       dot[0] = island['start'][0]
   
-  return map
+  # return map
 
-  # # Создание директории, если она не существует
+  # Создание директории, если она не существует
   # os.makedirs("data", exist_ok=True)
 
   # # Открытие файла для записи
   # with open("data/map.json", "w") as json_file:
   #     json.dump({'map': map}, json_file)
+      
 
-print(map())
+
+    
+  return map
+
+# print(map())
+

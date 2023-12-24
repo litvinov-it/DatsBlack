@@ -18,8 +18,8 @@ def shoot(data):
         fire = False
         coordinates = [0,0]
         for j in range(len(data['scan']['enemyShips'])):
-            len_x = abs(data['scan']['myShips'][i]['x'] - data["scan"]["enemyShips"][j]["x"])
-            len_y = abs(data['scan']['myShips'][i]['y'] - data["scan"]["enemyShips"][j]["y"])
+            len_x = data['scan']['myShips'][i]['x'] - data["scan"]["enemyShips"][j]["x"]
+            len_y = data['scan']['myShips'][i]['y'] - data["scan"]["enemyShips"][j]["y"]
             gipo = math.sqrt(len_x**2 + len_y**2)
             if gipo <= data['scan']['myShips'][i]['scanRadius']:
                 fire = True
