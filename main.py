@@ -47,6 +47,10 @@ while True:
 
     time.sleep(3)
 
+    if response['tick'] == 0:
+        print("Game Over")
+        break
+
 
 
 
